@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lesson_two/screens/home_page.dart';
+import 'package:lesson_two/screens/payment_method_page.dart';
 import 'package:lesson_two/screens/second_page.dart';
+import 'package:lesson_two/screens/third_page.dart';
 
 void main() {
   runApp(const SampleApp());
@@ -12,6 +14,7 @@ class SampleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Bu title edi',
       themeMode: ThemeMode.light,
       darkTheme: ThemeData(
@@ -20,7 +23,7 @@ class SampleApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: PaymentMethodPage(),
     );
   }
 }
