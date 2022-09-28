@@ -8,6 +8,7 @@ import 'package:lesson_two/screens/third_page.dart';
 import 'package:lesson_two/utils/colors.dart';
 import 'package:lesson_two/utils/images.dart';
 import 'package:lesson_two/utils/styles.dart';
+import 'package:lesson_two/widgets/next_button.dart';
 
 class PaymentMethodPage extends StatefulWidget {
   const PaymentMethodPage({Key? key}) : super(key: key);
@@ -20,9 +21,14 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
   String myTitle = "Payment Method";
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyColors.C_FEFEFF,
+      // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Container(
           decoration: const BoxDecoration(
@@ -58,7 +64,26 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
               buildButton(MyImages.image_payoneer, "PAYONEER"),
               // buildNextButton()
               SizedBox(height: 24.h),
-              buildNextButton()
+              Container(
+                width: double.infinity,
+                height: 60,
+                decoration: const BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.all(Radius.circular(12))),
+                child: Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: "Password",
+                      border: InputBorder.none,
+                      suffixIcon: SvgPicture.asset(MyImages.icon_back),
+                      prefixIcon: SvgPicture.asset(MyImages.icon_back),
+                    ),
+                  ),
+                ),
+              ),
+              NextButton(
+                myTitle: "Next 2",
+              ),
             ],
           ),
         ),
@@ -83,7 +108,6 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
             nextPage = TestPage(screenTitle: title);
             break;
         }
-
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => nextPage),
@@ -121,74 +145,38 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
     );
   }
 
-  Widget buildNextButton() {
-    return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          InkWell(
-            onTap: () {
-              setState(() {
-                myTitle = "Clicked";
-              });
-            },
-            child: Center(
-                child: Container(
-              height: 56.h,
-              width: 150.w,
-              decoration: BoxDecoration(
-                  color: MyColors.C_53E88B,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(15.r),
-                  ),
-                  gradient: LinearGradient(
-                    colors: [
-                      MyColors.C_53E88B,
-                      MyColors.C_15BE77,
-                    ],
-                  )),
-              child: Center(
-                  child: Text(
-                "Next",
-                style: MyStyles.robotoBold700.copyWith(
-                  color: Colors.white,
-                  fontSize: 16.sp,
-                ),
-              )),
-            )),
-          ),
-          SizedBox(
-            height: 24.h,
-          )
-        ],
-      ),
-    );
-  }
-
   Widget buildSome() {
-    return Container(
-      padding: EdgeInsets.all(12).r,
-      height: 100.h,
-      width: double.infinity,
-      decoration: BoxDecoration(
-          color: Colors.white54,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey,
-              offset: Offset(0, 0.4),
-            ),
-          ],
-          borderRadius: BorderRadius.all(Radius.circular(20.r))),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Payment Method"),
-              Text("Edit"),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => TestPage(screenTitle: "screenTitle")));
+      },
+      child: Container(
+        padding: EdgeInsets.all(12).r,
+        height: 100.h,
+        width: double.infinity,
+        decoration: BoxDecoration(
+            color: Colors.white54,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey,
+                offset: Offset(0, 0.4),
+              ),
             ],
-          )
-        ],
+            borderRadius: BorderRadius.all(Radius.circular(20.r))),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Payment Method"),
+                Text("Edit"),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

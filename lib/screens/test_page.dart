@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lesson_two/utils/images.dart';
 
 class TestPage extends StatelessWidget {
   String screenTitle;
@@ -18,9 +19,17 @@ class TestPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Container(
-            height: screenHeight * 0.7,
-            color: Colors.black,
+          SizedBox(height: 120),
+          Center(
+            child: Container(
+              width: 120,
+              height: 240,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: NetworkImage('https://picsum.photos/200'),
+                      fit: BoxFit.cover),
+                  borderRadius: BorderRadius.all(Radius.circular(32))),
+            ),
           ),
           ElevatedButton(
               onPressed: () {
