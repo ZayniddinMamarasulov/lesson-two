@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lesson_two/screens/adaptive_page.dart';
 import 'package:lesson_two/screens/home_page.dart';
-import 'package:lesson_two/screens/lesson_five.dart';
-import 'package:lesson_two/screens/payment_method_page.dart';
-import 'package:lesson_two/screens/second_page.dart';
-import 'package:lesson_two/screens/test_page.dart';
-import 'package:lesson_two/screens/third_page.dart';
-import 'package:lesson_two/utils/colors.dart';
 import 'package:lesson_two/utils/themes.dart';
 
 void main() async {
@@ -36,13 +31,13 @@ class SampleApp extends StatelessWidget {
           child: MaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'Bu title edi',
-              themeMode: ThemeMode.dark,
+              themeMode: ThemeMode.system,
               darkTheme: MyThemes.themeDark,
               theme: MyThemes.themeLight,
               home: child),
         );
       },
-      child: PaymentMethodPage(),
+      child: AdaptivePage(),
     );
   }
 }
