@@ -23,12 +23,13 @@ class TestPage extends StatelessWidget {
           Center(
             child: Container(
               width: 120,
-              height: 240,
+              height: 120,
               decoration: BoxDecoration(
+                  border: Border.all(color: Colors.red, width: 2),
                   image: DecorationImage(
                       image: NetworkImage('https://picsum.photos/200'),
                       fit: BoxFit.cover),
-                  borderRadius: BorderRadius.all(Radius.circular(32))),
+                  borderRadius: BorderRadius.all(Radius.circular(60))),
             ),
           ),
           ElevatedButton(

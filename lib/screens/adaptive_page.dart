@@ -14,6 +14,7 @@ class AdaptivePage extends StatefulWidget {
 
 class _AdaptivePageState extends State<AdaptivePage> {
   bool isOn = false;
+  var controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +62,20 @@ class _AdaptivePageState extends State<AdaptivePage> {
               Color(0xFFED974A),
             ],
           )),
+          child: Column(
+            children: [
+              TextField(
+                controller: controller,
+              ),
+              TextFormField(
+                controller: controller,
+                validator: (val) {
+                  if (val!.length < 5) return "No";
+                },
+                onSaved: (val) {},
+              )
+            ],
+          ),
         ),
 
         /*GridView.builder(

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lesson_two/screens/adaptive_page.dart';
+import 'package:lesson_two/screens/flutter_eight.dart';
+import 'package:lesson_two/screens/flutter_eight_second.dart';
+import 'package:lesson_two/screens/flutter_nine.dart';
+import 'package:lesson_two/screens/flutter_nine_second.dart';
 import 'package:lesson_two/screens/home_page.dart';
 import 'package:lesson_two/utils/themes.dart';
 
@@ -29,7 +33,7 @@ class SampleApp extends StatelessWidget {
             }
           },
           child: MaterialApp(
-              debugShowCheckedModeBanner: false,
+              // debugShowCheckedModeBanner: false,
               title: 'Bu title edi',
               themeMode: ThemeMode.system,
               darkTheme: MyThemes.themeDark,
@@ -37,7 +41,8 @@ class SampleApp extends StatelessWidget {
               home: child),
         );
       },
-      child: AdaptivePage(),
+      child: MyPageViewPage(
+      ),
     );
   }
 }
