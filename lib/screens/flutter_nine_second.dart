@@ -1,25 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:lesson_two/models/post_model.dart';
+import 'package:lesson_two/screens/flutter_ten.dart';
 import 'package:lesson_two/screens/payment_method_page.dart';
 import 'package:lesson_two/screens/test_page.dart';
+import 'package:lesson_two/utils/styles.dart';
 
+import '../models/post_comments.dart';
+import '../models/user_model.dart';
 import 'home_page.dart';
 
 class MyPageViewPage extends StatefulWidget {
-  const MyPageViewPage({Key? key}) : super(key: key);
+  UserModel currentUser;
+
+  MyPageViewPage({Key? key, required this.currentUser}) : super(key: key);
 
   @override
   State<MyPageViewPage> createState() => _MyPageViewPageState();
 }
 
 class _MyPageViewPageState extends State<MyPageViewPage> {
-  var pageController = PageController(initialPage: 999, viewportFraction: 0.8);
+  var pageController = PageController(initialPage: 0);
+  var textFieldController = TextEditingController();
 
-  Widget getRandomImage(int index) {
+  Widget buildPostImage(String image, int currentPage) {
     return Container(
-      color: Colors.black,
-      child: Image.network(
-        "https://i.pravatar.cc/300?img=$index",
-        fit: BoxFit.cover,
+      width: double.infinity,
+      child: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            child: Image.network(
+              image,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Positioned(
+            right: 16,
+            top: 16,
+            child: Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.black.withOpacity(0.3)),
+              child: Text(
+                "${currentPage + 1}/4",
+                style: MyStyles.robotoRegular400.copyWith(color: Colors.white),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -51,49 +80,128 @@ class _MyPageViewPageState extends State<MyPageViewPage> {
     }
   }
 
-  int currentPage = 0;
-
   @override
   Widget build(BuildContext context) {
-    List pages = [
-      getRandomImage(3),
-      getRandomImage(2),
-      getRandomImage(50),
-      getRandomImage(56),
-    ];
-
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          SizedBox(height: 120),
-          Container(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 60),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.9,
+              child: ListView.builder(
+                  itemCount: PostModel.posts.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return buildPostItem(PostModel.posts[index]);
+                  }),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildPostItem(PostModel post) {
+    return Column(
+      children: [
+        InkWell(
+          onDoubleTap: () {
+            setState(() {
+              post.isLiked = true;
+            });
+          },
+          child: Container(
             height: 300,
             child: PageView.builder(
               onPageChanged: (index) {
                 setState(() {
-                  currentPage = index % 4;
+                  post.currentPage = index % 4;
                 });
               },
               controller: pageController,
               itemBuilder: (BuildContext context, int index) {
-                return pages[index % 4];
+                return buildPostImage(post.images[index], post.currentPage);
               },
+              itemCount: post.images.length,
             ),
           ),
-          SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: indicators(4, currentPage),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    post.isLiked = !post.isLiked;
+                  });
+                },
+                icon: post.isLiked
+                    ? Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                      )
+                    : Icon(Icons.favorite_border_outlined)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: indicators(4, post.currentPage),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.bookmark_border_outlined),
+            ),
+          ],
+        ),
+        Container(
+          padding: EdgeInsets.all(12),
+          child: Column(
+            children: [
+              buildComments(post.comments),
+              TextField(
+                onSubmitted: (value) {
+                  setState(() {
+                    post.comments.add(
+                      PostCommentModel(
+                          author: UserModel(firstName: "Bu biz"),
+                          comment: value),
+                    );
+                    textFieldController.text = "";
+                  });
+                },
+                controller: textFieldController,
+                decoration: InputDecoration(hintText: "Comments"),
+              ),
+              SizedBox(height: 12)
+            ],
           ),
-          ElevatedButton(
-            onPressed: () {
-              callNext();
-            },
-            child: Text("NEXT"),
-          )
-        ],
+        )
+      ],
+    );
+  }
+
+  Widget buildComments(List<PostCommentModel> comments) {
+    return Container(
+      height: 60,
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return buildCommentItem(comments[index]);
+        },
+        itemCount: comments.length,
       ),
+    );
+  }
+
+  Widget buildCommentItem(PostCommentModel comment) {
+    return Row(
+      children: [
+        Text(
+          comment.author.firstName ?? "Null",
+          style: MyStyles.robotoBold700,
+        ),
+        SizedBox(width: 18),
+        Text(comment.comment)
+      ],
     );
   }
 
@@ -101,8 +209,8 @@ class _MyPageViewPageState extends State<MyPageViewPage> {
     return List<Widget>.generate(imagesLength, (index) {
       return Container(
         margin: EdgeInsets.all(3),
-        width: 20,
-        height: 20,
+        width: 15,
+        height: 15,
         decoration: BoxDecoration(
             color: currentIndex == index ? Colors.black : Colors.black26,
             shape: BoxShape.circle),

@@ -41,8 +41,7 @@ class SampleApp extends StatelessWidget {
               home: child),
         );
       },
-      child: MyPageViewPage(
-      ),
+      child: MyFormScreen(),
     );
   }
 }

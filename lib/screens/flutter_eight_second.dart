@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lesson_two/models/user_model.dart';
+import 'package:lesson_two/screens/flutter_nine_second.dart';
 
 class MyFormScreen extends StatefulWidget {
   const MyFormScreen({Key? key}) : super(key: key);
@@ -14,6 +16,8 @@ class _MyFormScreenState extends State<MyFormScreen> {
   bool hasLowerCase = false;
   bool hasDigit = false;
 
+  UserModel currentUser = UserModel();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +30,9 @@ class _MyFormScreenState extends State<MyFormScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
+                onSaved: (value) {
+                  currentUser.firstName = value;
+                },
                 validator: (value) {
                   if (value!.length < 3) return "Ismni to'liq kiriting";
                 },
@@ -37,6 +44,9 @@ class _MyFormScreenState extends State<MyFormScreen> {
               ),
               const SizedBox(height: 12),
               TextFormField(
+                onSaved: (value) {
+                  currentUser.lastName = value;
+                },
                 decoration: InputDecoration(
                   hintText: 'Last name',
                   prefixIcon: Icon(Icons.person),
@@ -45,6 +55,9 @@ class _MyFormScreenState extends State<MyFormScreen> {
               ),
               const SizedBox(height: 12),
               TextFormField(
+                onSaved: (value) {
+                  currentUser.pass = value;
+                },
                 onChanged: (value) {
                   String patternUpperCase = r'^(?=.*?[A-Z]).*$';
                   RegExp regExp = RegExp(patternUpperCase);
@@ -102,10 +115,15 @@ class _MyFormScreenState extends State<MyFormScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     bool? state = formKey.currentState?.validate();
-
                     if (state == true) {
-                      // send to server
+                      formKey.currentState?.save();
                     }
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => MyPageViewPage(
+                                  currentUser: currentUser,
+                                )));
                   },
                   child: Text("SAVE"),
                 ),
